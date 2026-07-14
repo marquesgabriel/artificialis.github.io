@@ -12,7 +12,7 @@ import {
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useTranslation } from 'react-i18next';
 
-import type { PrintObject } from '../types';
+import type { PrintObject } from '../../types';
 
 interface Props<T extends Record<string, number>> {
   object: PrintObject<T>;

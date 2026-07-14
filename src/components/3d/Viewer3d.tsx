@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import type { BufferGeometry } from 'three';
-import type { PrintObject } from '../types';
+import type { PrintObject } from '../../types';
 
 interface Props<T extends Record<string, number>> {
   object: PrintObject<T>;
@@ -39,25 +39,27 @@ export function Viewer3D<T extends Record<string, number>>({
     el.appendChild(renderer.domElement);
 
     // Lighting
-    scene.add(new THREE.AmbientLight(0xfff5e6, 0.5));
-    const key = new THREE.DirectionalLight(0xfff5e6, 1.8);
-    key.position.set(100, 200, 100);
+    scene.add(new THREE.AmbientLight(0xe0ddd9, 0.5));
+    const key = new THREE.DirectionalLight(0xe0ddd9, 1.8);
+    key.position.set(-100, 50, -80);
+    // key.position.set(100, 200, 100);
     scene.add(key);
-    const fill = new THREE.DirectionalLight(0xc8aaff, 0.6);
-    fill.position.set(-100, 50, -80);
+    const fill = new THREE.DirectionalLight(0x0ceea3, 0.6);
+    // fill.position.set(-100, 50, -80);
+    fill.position.set(100, 200, 100);
     scene.add(fill);
     const rim = new THREE.DirectionalLight(0xffe4b5, 0.4);
     rim.position.set(0, -80, -100);
     scene.add(rim);
 
     // Grid
-    const grid = new THREE.GridHelper(300, 30, '#2a2520', '#1e1c18');
+    const grid = new THREE.GridHelper(300, 90, '#b85d03', '#b85d03');
     grid.position.y = -1;
     scene.add(grid);
 
     // Material
     const mat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color('#c87941'),
+      color: new THREE.Color('#13c76d'),
       metalness: 0.15,
       roughness: 0.45,
     });
@@ -96,7 +98,6 @@ export function Viewer3D<T extends Record<string, number>>({
       const cy = 'touches' in e ? e.touches[0].clientY : e.clientY;
       rotY += (cx - lastX) * 0.008;
       rotX += (cy - lastY) * 0.005;
-      rotX = Math.max(-0.8, Math.min(1.0, rotX));
       lastX = cx; lastY = cy;
     };
     const onWheel = (e: WheelEvent) => {

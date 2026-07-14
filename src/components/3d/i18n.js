@@ -1,0 +1,52 @@
+export const translations = {
+  en: {
+    translation: {
+      appTitle: "3D object creator",
+      appSubtitle: "Parametric customizer",
+      objectSelector: "Object",
+      parameters: "Parameters",
+      mmUnit: "mm",
+      downloadSTL: "Download STL",
+      generating: "Generating...",
+      preview: "3D Preview",
+      dragToRotate: "Drag to rotate · Scroll to zoom",
+      langLabel: "Language",
+      resetDefaults: "Reset Defaults",
+      dimensions: "Dimensions",
+      constraints: "Constraints",
+      minWall: "Min. wall",
+      constant: "constant",
+      sectionDiagram: "Cross-section",
+      tipDragger: "Drag the 3D model to explore",
+      introDescription: "Artificialis - Hobbyist 3D modeler and professional developer. Creating 3D models for free",
+      socialInstagram: "Instagram",
+      socialPrintables: "Printables",
+      socialBuyMeCoffee: "Buy me a coffee",
+    }
+  },
+  pt: {
+    translation: {
+      appTitle: "Criador de objeto 3D",
+      appSubtitle: "Personalizador paramétrico",
+      objectSelector: "Objeto",
+      parameters: "Parâmetros",
+      mmUnit: "mm",
+      downloadSTL: "Baixar STL",
+      generating: "Gerando...",
+      preview: "Prévia 3D",
+      dragToRotate: "Arraste para girar · Role para zoom",
+      langLabel: "Idioma",
+      resetDefaults: "Restaurar Padrões",
+      dimensions: "Dimensões",
+      constraints: "Restrições",
+      minWall: "Parede mín.",
+      constant: "constante",
+      sectionDiagram: "Seção transversal",
+      tipDragger: "Arraste o modelo 3D para explorar",
+      introDescription: "Artificialis - Modelador 3D amador e desenvolvedor profissional. Criando modelos 3D gratuitamente",
+      socialInstagram: "Instagram",
+      socialPrintables: "Printables",
+      socialBuyMeCoffee: "Me pague um café",
+    }
+  }
+};

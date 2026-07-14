@@ -6,6 +6,7 @@ import {
   CssBaseline,
   FormControl,
   InputLabel,
+  Link,
   MenuItem,
   Paper,
   Select,
@@ -16,10 +17,10 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-import './components/i18nSetup';
+import './components/3d/i18nSetup';
 import { OBJECTS } from './objects';
 import { useParamForm } from './hooks/useParamForm';
-import { Viewer3D, downloadSTL, ParameterPanel } from './components';
+import { Viewer3D, downloadSTL, ParameterPanel, Footer, AboutPage } from './components';
 import theme from './theme';
 import type { PrintObject } from './types';
 
@@ -32,10 +33,6 @@ function App() {
   }, [selectedObjectId]);
 
   const { values, raw, errors, isValid, handleChange, handleBlur, reset } = useParamForm(object);
-
-  const handleLanguageChange = async (event: SelectChangeEvent<string>) => {
-    await i18n.changeLanguage(event.target.value);
-  };
 
   const handleObjectChange = (event: SelectChangeEvent<string>) => {
     setSelectedObjectId(event.target.value);
@@ -51,6 +48,8 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default', color: 'text.primary', px: 2, py: 3 }}>
+        <AboutPage />
+
         <Box
           component="header"
           sx={{ maxWidth: 1420, mx: 'auto', pb: 3, mb: 3, borderBottom: 1, borderColor: 'divider' }}
@@ -63,8 +62,8 @@ function App() {
           </Typography>
         </Box>
 
-        <Box sx={{ maxWidth: 1420, mx: 'auto', display: 'grid', gap: 24, gridTemplateColumns: { xs: '1fr', lg: '360px 1fr' } }}>
-          <Paper sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <Box sx={{ maxWidth: 1420, mx: 'auto', display: 'grid', gap: 6, gridTemplateColumns: { xs: '1fr', lg: '720px 1fr' } }}>
+          <Paper sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
               <Box>
                 <Typography variant="subtitle2" color="text.secondary">
@@ -90,18 +89,6 @@ function App() {
             </Stack>
 
             <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
-              <FormControl size="small" sx={{ minWidth: 140 }}>
-                <InputLabel id="language-select-label">{t('langLabel')}</InputLabel>
-                <Select
-                  labelId="language-select-label"
-                  value={i18n.language}
-                  label={t('langLabel')}
-                  onChange={handleLanguageChange}
-                >
-                  <MenuItem value="en">EN</MenuItem>
-                  <MenuItem value="pt">PT</MenuItem>
-                </Select>
-              </FormControl>
               <Stack direction="row" spacing={1} sx={{ ml: 'auto' }}>
                 <Button variant="outlined" onClick={reset}>
                   {t('resetDefaults')}
@@ -140,6 +127,8 @@ function App() {
             </Box>
           </Paper>
         </Box>
+
+        <Footer />
       </Box>
     </ThemeProvider>
   );

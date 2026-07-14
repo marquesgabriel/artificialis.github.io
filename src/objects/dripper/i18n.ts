@@ -1,0 +1,28 @@
+export const dripperObjectTranslations = {
+  en: {
+    dripperSupport: 'Dripper Support',
+    dripperInnerDiam: 'Dripper Inner Diameter',
+    dripperOuterDiam: 'Dripper Outer Diameter',
+    bottleMouthInnerDiam: 'Bottle Mouth Inner Diameter',
+    bottleMouthDepth: 'Bottle Mouth Inner Depth',
+    validationInnerLtOuter: 'Inner diameter must be smaller than outer diameter',
+    validationOuterGtInner: 'Outer diameter must be greater than inner diameter',
+    validationMin: 'Minimum value is {{min}}mm',
+    validationRequired: 'This field is required',
+    validationMax: 'Maximum value is {{max}}mm',
+    wallWarning: 'Minimum wall width of 2.4mm is enforced',
+  },
+  pt: {
+    dripperSupport: 'Suporte para coador de café',
+    dripperInnerDiam: 'Diâmetro Interno do Dripper',
+    dripperOuterDiam: 'Diâmetro Externo do Dripper',
+    bottleMouthInnerDiam: 'Diâmetro Interno da Boca da Garrafa',
+    bottleMouthDepth: 'Profundidade Interna da Boca da Garrafa',
+    validationInnerLtOuter: 'O diâmetro interno deve ser menor que o externo',
+    validationOuterGtInner: 'O diâmetro externo deve ser maior que o interno',
+    validationMin: 'Valor mínimo é {{min}}mm',
+    validationRequired: 'Este campo é obrigatório',
+    validationMax: 'Valor máximo é {{max}}mm',
+    wallWarning: 'Espessura mínima de parede de 2.4mm aplicada',
+  },
+};

@@ -1,4 +1,2 @@
-// export * from './CrossSection.tsx.old';
-export * from './ParameterPanel';
-export * from './stlExport';
-export * from './Viewer3d';
+export * from './3d';
+export * from './info';

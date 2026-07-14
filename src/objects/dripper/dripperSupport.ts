@@ -19,9 +19,6 @@ function buildProfile(params: DripperSupportParams): [number, number][] {
   const dripperInnerR = (dripperInnerDiam+.1) / 2;
   const dripperOuterR = dripperOuterDiam / 2;
   const plugR = bottleR - WALL;
-  // const flangeOuterR = bottleR + WALL;
-  // const topRingH = 11;
-  // const funnelH = Math.max(WALL * 2, dripperOuterR - bottleR);
 
   const y0 = 0;
   const y1 = bottleMouthDepth;
