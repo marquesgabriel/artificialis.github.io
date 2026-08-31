@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Box,
   TextField,
@@ -23,7 +22,7 @@ interface Props<T extends Record<string, number>> {
   onBlur: (name: keyof T) => void;
 }
 
-export const ParameterPanel = ({
+export const ParameterPanel = <T extends Record<string, number>>({
   object,
   raw,
   values,
@@ -48,9 +47,9 @@ export const ParameterPanel = ({
                 <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.78rem', fontWeight: 500 }}>
                   {t(field.labelKey)}
                 </Typography>
-                {/* <Tooltip title={t('wallWarning')} placement="top" arrow>
+                <Tooltip title={t('wallWarning')} placement="top" arrow>
                   <InfoOutlinedIcon sx={{ fontSize: 13, color: 'text.secondary', opacity: 0.5, cursor: 'help' }} />
-                </Tooltip> */}
+                </Tooltip>
               </Stack>
               <Chip
                 label={`${field.unit}`}

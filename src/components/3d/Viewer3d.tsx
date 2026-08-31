@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import type { BufferGeometry } from 'three';
 import type { PrintObject } from '../../types';
@@ -22,6 +22,7 @@ export function Viewer3D<T extends Record<string, number>>({
   useEffect(() => {
     const el = mountRef.current;
     if (!el) return;
+    const state = stateRef.current;
 
     const W = el.clientWidth;
     const H = el.clientHeight;
@@ -79,7 +80,7 @@ export function Viewer3D<T extends Record<string, number>>({
       scene.add(mesh);
     };
     addMesh(params);
-    stateRef.current.addMesh = addMesh;
+    state.addMesh = addMesh;
 
     // Orbit — manual implementation
     let isDragging = false;
@@ -134,7 +135,7 @@ export function Viewer3D<T extends Record<string, number>>({
     };
     animate();
 
-    stateRef.current.cleanup = () => {
+    state.cleanup = () => {
       cancelAnimationFrame(raf);
       el.removeEventListener('mousedown', onDown);
       el.removeEventListener('touchstart', onDown as EventListener);
@@ -149,7 +150,7 @@ export function Viewer3D<T extends Record<string, number>>({
       if (el.contains(renderer.domElement)) el.removeChild(renderer.domElement);
     };
 
-    return () => stateRef.current.cleanup?.();
+    return () => state.cleanup?.();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [object]); // re-init if the object type changes
 
