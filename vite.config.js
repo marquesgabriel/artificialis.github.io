@@ -23,8 +23,6 @@ export default defineConfig({
       include: [
         "src/**/*.{ts,tsx}",
         "!src/index.tsx",
-        "!src/reportWebVitals.ts",
-        "!src/utils/supabase.ts",
         "!src/**/*.d.ts"
       ],
       thresholds: {
