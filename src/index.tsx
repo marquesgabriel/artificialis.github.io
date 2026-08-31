@@ -134,6 +134,11 @@ function App() {
   );
 }
 
+declare const __APP_VERSION__: string;
+
+(window as unknown as { APP_VERSION: string }).APP_VERSION = __APP_VERSION__;
+console.log(`App version: ${__APP_VERSION__} (also available as window.APP_VERSION)`);
+
 const rootElement = document.getElementById('root');
 if (!rootElement) {
   throw new Error('Root element not found');
