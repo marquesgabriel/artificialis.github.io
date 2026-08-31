@@ -52,10 +52,18 @@ export default [
     },
   },
 
+  // vitest globals (describe/it/expect/etc.) for test files
+  {
+    files: ["src/**/*.test.{ts,tsx}"],
+    languageOptions: {
+      globals: { ...globals.vitest },
+    },
+  },
+
   // prettier sempre por último
   prettier,
 
   {
-    ignores: ["build/", "coverage/", "node_modules/", "src/index.tsx", "**/*.d.ts", "**/*.test.tsx"],
+    ignores: ["build/", "coverage/", "node_modules/", "src/index.tsx", "**/*.d.ts"],
   },
 ];
