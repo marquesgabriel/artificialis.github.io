@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Window } from '../chrome';
 
 const CONSENT_STORAGE_KEY = 'artificialis.github.io:cookie-consent';
 const ADSENSE_PUBLISHER_ID = import.meta.env.REACT_APP_ADSENSE_PUBLISHER_ID;
@@ -60,6 +61,9 @@ export const SupportSidebar = () => {
   const [consent, setConsent] = useState<Consent>(() => loadConsent());
 
   if (!ADSENSE_PUBLISHER_ID) return null;
+  // Nothing to show once declined - matches the pre-decline state where
+  // nothing renders either, rather than leaving an empty window shell.
+  if (consent === 'declined') return null;
 
   const handleConsent = (value: 'accepted' | 'declined') => {
     setConsent(value);
@@ -72,19 +76,17 @@ export const SupportSidebar = () => {
 
   return (
     <Box sx={{ maxWidth: 1420, mx: 'auto', mt: 3 }}>
-      {consent === 'accepted' && <AdSlot />}
-
-      {consent === null && (
-        <Paper sx={{ p: 2 }}>
+      <Window title={t('supportTitle')} barButtons="close-only">
+        {consent === 'accepted' ? (
+          <AdSlot />
+        ) : (
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             alignItems={{ sm: 'center' }}
             justifyContent="space-between"
             spacing={1.5}
           >
-            <Typography variant="body2" color="text.secondary">
-              {t('adsConsentPrompt')}
-            </Typography>
+            <Typography variant="body2">{t('adsConsentPrompt')}</Typography>
             <Stack direction="row" spacing={1}>
               <Button size="small" variant="contained" onClick={() => handleConsent('accepted')}>
                 {t('adsAccept')}
@@ -94,8 +96,8 @@ export const SupportSidebar = () => {
               </Button>
             </Stack>
           </Stack>
-        </Paper>
-      )}
+        )}
+      </Window>
     </Box>
   );
 };

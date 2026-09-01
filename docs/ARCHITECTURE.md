@@ -82,6 +82,23 @@ each registered object's own translations. A language `<Select>` in
 
 ## Theming
 
-`src/theme/index.ts` defines a dark MUI theme (amber/espresso palette,
-DM Serif/DM Sans fonts) matching the app's coffee/craft/industrial visual
-identity.
+The app uses a Windows 98 retro skin, matching the same style used on
+marquesgabriel.github.io (portfolio, the style's origin) and
+token-generator (mtg, the MUI-adapted port this project's version was
+ported from). It's split across two layers:
+
+- `src/theme/index.ts` provides light-mode MUI defaults (colors, base
+  font) for anything the SCSS layer doesn't reach.
+- `src/styles/_win98.scss` (imported from `src/index.tsx` via
+  `src/styles/index.scss`) does the actual visual work: flat gray
+  beveled borders, the navy→skyblue titlebar gradient, and overrides
+  targeting MUI's stable public class names (`.MuiButton-root`,
+  `.MuiInputBase-root`, `.MuiSlider-root`, etc.) with `!important`,
+  since MUI's own component styles otherwise win by source order/
+  specificity regardless of the theme.
+
+`src/components/chrome/Window.tsx` is the reusable window-chrome
+component (titlebar with minimize/maximize/close buttons) wrapping each
+top-level panel (`AboutPage`, the parameter form, the 3D preview,
+`SupportSidebar`) - same component contract as the portfolio/mtg
+`Container` component it was ported from.
