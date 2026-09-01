@@ -36,7 +36,43 @@ const theme = createTheme({
     divider: '#808080',
   },
   typography: {
+    // MUI's default type scale is tuned for Roboto - a small pixel-style
+    // font like MS Sans Serif at Roboto's sizes (h3 defaults to 3rem/48px)
+    // looks badly oversized/disproportionate. Neither portfolio nor mtg
+    // hits this: portfolio's headings are plain HTML sized by its own CSS,
+    // and mtg's layout is Bootstrap-driven rather than built around large
+    // MUI Typography variants - this app is the first to actually need a
+    // win98-appropriate size scale, not just a font-family swap.
     fontFamily: '"MS Sans Serif", "Tahoma", sans-serif',
+    h3: {
+      fontSize: '1.5rem',
+      fontWeight: 700,
+    },
+    h6: {
+      fontSize: '0.95rem',
+      fontWeight: 700,
+    },
+    subtitle1: {
+      fontSize: '0.8125rem',
+      fontWeight: 400,
+    },
+    subtitle2: {
+      fontSize: '0.75rem',
+      fontWeight: 700,
+    },
+    body1: {
+      fontSize: '0.8125rem',
+    },
+    body2: {
+      fontSize: '0.75rem',
+    },
+    caption: {
+      fontSize: '0.6875rem',
+    },
+    button: {
+      fontSize: '0.8125rem',
+      textTransform: 'none',
+    },
   },
   shape: {
     borderRadius: 0,
