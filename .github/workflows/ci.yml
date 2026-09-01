@@ -21,8 +21,6 @@ jobs:
 
       - run: npm run typecheck
 
-      # No --coverage yet: the 80% threshold isn't met (tracked in #31).
-      # Switch to `npm run test:coverage` once that closes.
-      - run: npm test -- --run
+      - run: npm run test:coverage
 
       - run: npm run build
