@@ -56,4 +56,15 @@ describe('SupportSidebar', () => {
     render(<SupportSidebar />);
     expect(document.querySelector('.adsbygoogle')).toBeInTheDocument();
   });
+
+  it('falls back to no stored consent when localStorage access throws', async () => {
+    const getItemSpy = vi.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation(() => {
+      throw new Error('access denied');
+    });
+    vi.stubEnv('REACT_APP_ADSENSE_PUBLISHER_ID', 'ca-pub-test');
+    const SupportSidebar = await loadComponent();
+    render(<SupportSidebar />);
+    expect(screen.getByText(/accept cookies to enable them/i)).toBeInTheDocument();
+    getItemSpy.mockRestore();
+  });
 });
