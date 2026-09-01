@@ -1,5 +1,5 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
-import '../components/3d/i18nSetup';
+import '../i18n';
 import { useParamForm } from './useParamForm';
 import { dripperSupportObject } from '../objects/dripper/dripperSupport';
 
@@ -24,9 +24,7 @@ describe('useParamForm', () => {
       result.current.reset();
     });
 
-    expect(result.current.raw.dripperInnerDiam).toBe(
-      String(dripperSupportObject.defaults.dripperInnerDiam)
-    );
+    expect(result.current.raw.dripperInnerDiam).toBe(String(dripperSupportObject.defaults.dripperInnerDiam));
     expect(result.current.isValid).toBe(true);
   });
 });

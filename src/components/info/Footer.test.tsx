@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import '../3d/i18nSetup';
+import '../../i18n';
 import { Footer } from './Footer';
 
 describe('Footer', () => {
