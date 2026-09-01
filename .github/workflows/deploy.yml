@@ -21,6 +21,8 @@ jobs:
       - run: npm ci
 
       - run: npm run build
+        env:
+          REACT_APP_ADSENSE_PUBLISHER_ID: ${{ vars.REACT_APP_ADSENSE_PUBLISHER_ID }}
 
       - name: Deploy to gh-pages
         env:

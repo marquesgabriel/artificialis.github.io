@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 
 import { OBJECTS } from './objects';
 import { useParamForm } from './hooks/useParamForm';
-import { Viewer3D, downloadSTL, ParameterPanel, Footer, AboutPage } from './components';
+import { Viewer3D, downloadSTL, ParameterPanel, Footer, AboutPage, SupportSidebar } from './components';
 import theme from './theme';
 import type { PrintObject } from './types';
 
@@ -140,6 +140,8 @@ export function App() {
             </Box>
           </Paper>
         </Box>
+
+        <SupportSidebar />
 
         <Footer />
       </Box>
