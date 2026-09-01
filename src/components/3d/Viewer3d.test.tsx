@@ -94,9 +94,22 @@ describe('Viewer3D', () => {
     unmount();
   });
 
-  it('resizes on window resize', () => {
+  it('observes its container with a ResizeObserver and disconnects it on unmount', () => {
+    const observe = vi.fn();
+    const disconnect = vi.fn();
+    vi.stubGlobal(
+      'ResizeObserver',
+      vi.fn().mockImplementation(function () {
+        return { observe, unobserve: vi.fn(), disconnect };
+      })
+    );
+
     const { unmount } = render(<Viewer3D object={dripperSupportObject} params={dripperSupportObject.defaults} />);
-    expect(() => fireEvent(window, new Event('resize'))).not.toThrow();
+    expect(observe).toHaveBeenCalled();
+
     unmount();
+    expect(disconnect).toHaveBeenCalled();
+
+    vi.unstubAllGlobals();
   });
 });

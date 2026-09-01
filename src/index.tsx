@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import './i18n';
+import './styles/index.scss';
 import { App } from './App';
 
 (window as unknown as { APP_VERSION: string }).APP_VERSION = __APP_VERSION__;

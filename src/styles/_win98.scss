@@ -1,0 +1,200 @@
+// Windows 98-esque skin for the app shell (parameter form, 3D preview,
+// support sidebar, buttons, inputs, page background).
+//
+// The .window/.title/.minimize-btn/.maximize-btn/.close-btn/.window-body
+// rules below are ported from marquesgabriel.github.io's win98.scss (via
+// token-generator's already-MUI-adapted _win98.scss - src/components/chrome
+// /Window.tsx here is likewise a port of that project's Container
+// component) - kept as the same visual contract on purpose, per the
+// project-scaffold standard, instead of reinventing an equivalent.
+
+@use 'sass:string';
+
+$win98-gray: #c0c0c0;
+$win98-dark-gray: #808080;
+$win98-darker-gray: #535050;
+$win98-titlebar-start: navy;
+$win98-titlebar-end: skyblue;
+
+// $important: MUI's own variants (e.g. Button's "contained") set their own
+// unimportant `border` shorthand, which otherwise wins over these
+// individual border-side declarations regardless of source order - needed
+// wherever this mixin overrides a MUI component, harmless on the plain
+// divs (titlebar buttons) that don't have a competing border rule.
+@mixin win98-outset($size: 2px, $important: false) {
+  $bang: if($important, ' !important', '');
+  border-top: string.unquote($size + ' solid #ffffff' + $bang);
+  border-left: string.unquote($size + ' solid #ffffff' + $bang);
+  border-right: string.unquote($size + ' solid ' + $win98-dark-gray + $bang);
+  border-bottom: string.unquote($size + ' solid ' + $win98-dark-gray + $bang);
+}
+
+@mixin win98-inset($size: 2px, $important: false) {
+  $bang: if($important, ' !important', '');
+  border-top: string.unquote($size + ' solid ' + $win98-dark-gray + $bang);
+  border-left: string.unquote($size + ' solid ' + $win98-dark-gray + $bang);
+  border-right: string.unquote($size + ' solid #ffffff' + $bang);
+  border-bottom: string.unquote($size + ' solid #ffffff' + $bang);
+}
+
+body {
+  background-color: $win98-gray;
+  font-family: 'MS Sans Serif', 'Tahoma', sans-serif;
+}
+
+div.window {
+  border: outset 3px gray;
+  border-top: outset 3px white;
+  border-left: outset 3px white;
+  background: $win98-gray;
+  box-shadow: 1px 1px $win98-darker-gray;
+
+  > .title {
+    padding: 0.25em;
+    font-weight: bold;
+    background: linear-gradient(90deg, $win98-titlebar-start, $win98-titlebar-end);
+    color: white;
+    position: relative;
+
+    .minimize-btn,
+    .maximize-btn,
+    .close-btn {
+      position: absolute;
+      top: 2px;
+      background: $win98-gray;
+      @include win98-outset(2px);
+      height: 18px;
+      width: 18px;
+      text-align: center;
+      color: black;
+    }
+
+    .minimize-btn {
+      right: 3.15em;
+
+      &::before {
+        content: '_';
+        bottom: 4px;
+        position: relative;
+      }
+    }
+
+    .maximize-btn {
+      right: 1.7em;
+
+      &::before {
+        content: '◻';
+        bottom: 2px;
+        position: relative;
+      }
+    }
+
+    .close-btn {
+      right: 0.25em;
+
+      &::before {
+        content: '✕';
+        bottom: 2px;
+        position: relative;
+      }
+    }
+  }
+
+  .window-body {
+    padding: 0.5em;
+  }
+}
+
+// MUI overrides - targets MUI's stable public class names (safe to rely on
+// across versions), not generated emotion hashes.
+.MuiButton-root {
+  border-radius: 0 !important;
+  background-color: $win98-gray !important;
+  color: black !important;
+  box-shadow: none !important;
+  text-transform: none !important;
+  @include win98-outset(2px, true);
+
+  &:hover {
+    background-color: $win98-gray !important;
+  }
+
+  &:active {
+    @include win98-inset(2px, true);
+  }
+
+  &.Mui-disabled {
+    color: $win98-dark-gray !important;
+  }
+}
+
+.MuiInputBase-root {
+  background-color: white;
+  padding: 1px 4px !important;
+  @include win98-inset(2px, true);
+
+  &::before,
+  &::after {
+    display: none !important; // remove MUI's underline, the inset border replaces it
+  }
+}
+
+// TextField/Select default to the "outlined" variant here (unlike mtg's
+// underline-based "standard" fields, which .MuiInputBase-root's ::before/
+// ::after removal above was enough for) - outlined renders its border via a
+// <fieldset><legend> child instead, which otherwise doubles up with the
+// inset border above as a visible nested-border artifact.
+.MuiOutlinedInput-notchedOutline {
+  border: none !important;
+}
+
+// MUI's default label colors (gray unfocused, theme-blue focused) were hard
+// to read against the win98 gray panel background - force a single legible
+// color instead of MUI's default focus/unfocused color swap.
+.MuiFormLabel-root {
+  color: black !important;
+
+  &.Mui-focused {
+    color: black !important;
+  }
+}
+
+.MuiTypography-root {
+  font-family: 'MS Sans Serif', 'Tahoma', sans-serif !important;
+}
+
+.MuiSlider-root {
+  color: $win98-dark-gray !important;
+
+  .MuiSlider-thumb {
+    border-radius: 0 !important;
+    background-color: $win98-gray !important;
+    @include win98-outset(2px, true);
+
+    &::before {
+      box-shadow: none !important;
+    }
+  }
+
+  .MuiSlider-rail {
+    opacity: 1 !important;
+    @include win98-inset(2px, true);
+  }
+
+  .MuiSlider-track {
+    border: none !important;
+  }
+}
+
+.MuiChip-root {
+  border-radius: 0 !important;
+  background-color: white !important;
+  @include win98-inset(1px, true);
+}
+
+.MuiTooltip-tooltip {
+  border-radius: 0 !important;
+  background-color: $win98-gray !important;
+  color: black !important;
+  @include win98-outset(1px, true);
+}
