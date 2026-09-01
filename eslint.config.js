@@ -68,6 +68,6 @@ export default [
   prettier,
 
   {
-    ignores: ["build/", "coverage/", "node_modules/", "src/index.tsx", "**/*.d.ts"],
+    ignores: ["build/", "coverage/", "node_modules/", "**/*.d.ts"],
   },
 ];
