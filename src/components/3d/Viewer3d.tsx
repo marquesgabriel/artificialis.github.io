@@ -25,7 +25,7 @@ export function Viewer3D<T extends Record<string, number>>({ object, params }: P
     const H = el.clientHeight;
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color('#0f0e0d');
+    scene.background = new THREE.Color('#6ac1f3');
 
     const camera = new THREE.PerspectiveCamera(42, W / H, 0.1, 2000);
     camera.position.set(0, 60, 200);
@@ -42,22 +42,22 @@ export function Viewer3D<T extends Record<string, number>>({ object, params }: P
     key.position.set(-100, 50, -80);
     // key.position.set(100, 200, 100);
     scene.add(key);
-    const fill = new THREE.DirectionalLight(0x0ceea3, 0.6);
+    const fill = new THREE.DirectionalLight(0xe0ddd9, 1);
     // fill.position.set(-100, 50, -80);
     fill.position.set(100, 200, 100);
     scene.add(fill);
-    const rim = new THREE.DirectionalLight(0xffe4b5, 0.4);
+    const rim = new THREE.DirectionalLight(0xe0ddd9, 1);
     rim.position.set(0, -80, -100);
     scene.add(rim);
 
     // Grid
-    const grid = new THREE.GridHelper(300, 90, '#b85d03', '#b85d03');
+    const grid = new THREE.GridHelper(300, 90, '#050505', '#050505');
     grid.position.y = -1;
     scene.add(grid);
 
     // Material
     const mat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color('#13c76d'),
+      color: new THREE.Color('#bdc3ce'),
       metalness: 0.15,
       roughness: 0.45,
     });
@@ -182,9 +182,6 @@ export function Viewer3D<T extends Record<string, number>>({ object, params }: P
     // count as "definite" for percentage-height resolution on children,
     // leaving this at 0 height (and the whole canvas invisible) regardless
     // of when Viewer3D measures it.
-    <div
-      ref={mountRef}
-      style={{ position: 'absolute', inset: 0, cursor: 'grab', borderRadius: 12, overflow: 'hidden' }}
-    />
+    <div ref={mountRef} style={{ position: 'absolute', inset: 0, cursor: 'grab', overflow: 'hidden' }} />
   );
 }
