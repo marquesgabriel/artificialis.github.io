@@ -22,6 +22,9 @@ export const translations = {
       socialInstagram: 'Instagram',
       socialPrintables: 'Printables',
       socialBuyMeCoffee: 'Buy me a coffee',
+      adsConsentPrompt: 'This site can show ads to help support development. Accept cookies to enable them.',
+      adsAccept: 'Accept',
+      adsDecline: 'Decline',
     },
   },
   pt: {
@@ -48,6 +51,10 @@ export const translations = {
       socialInstagram: 'Instagram',
       socialPrintables: 'Printables',
       socialBuyMeCoffee: 'Me pague um café',
+      adsConsentPrompt:
+        'Este site pode mostrar anúncios para ajudar a manter o desenvolvimento. Aceite os cookies para habilitá-los.',
+      adsAccept: 'Aceitar',
+      adsDecline: 'Recusar',
     },
   },
 };
