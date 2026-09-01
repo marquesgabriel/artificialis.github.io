@@ -175,9 +175,16 @@ export function Viewer3D<T extends Record<string, number>>({ object, params }: P
   }, [params]);
 
   return (
+    // Absolute+inset fills the parent's actual painted box directly, rather
+    // than via a height:100% percentage that depends on the parent having a
+    // CSS-definite height - the parent here only gets its size from flex:1
+    // inside a flex column, which flexbox resolves visually but doesn't
+    // count as "definite" for percentage-height resolution on children,
+    // leaving this at 0 height (and the whole canvas invisible) regardless
+    // of when Viewer3D measures it.
     <div
       ref={mountRef}
-      style={{ width: '100%', height: '100%', cursor: 'grab', borderRadius: 12, overflow: 'hidden' }}
+      style={{ position: 'absolute', inset: 0, cursor: 'grab', borderRadius: 12, overflow: 'hidden' }}
     />
   );
 }

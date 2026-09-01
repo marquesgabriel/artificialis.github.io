@@ -119,6 +119,7 @@ export function App() {
 
               <Box
                 sx={{
+                  position: 'relative',
                   flex: 1,
                   minHeight: 460,
                   overflow: 'hidden',
