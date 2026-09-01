@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 export const Footer = () => {
   const { t } = useTranslation();
-  const currentYear = '2026'
+  const currentYear = new Date().getFullYear();
   return (
     <Box component="footer" sx={{ maxWidth: 1420, mx: 'auto', mt: 6, pt: 3, borderTop: 1, borderColor: 'divider', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 1.5 }}>
       <Typography variant="body2" color="text.secondary">

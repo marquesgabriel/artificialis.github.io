@@ -49,6 +49,10 @@ export default [
       "@typescript-eslint/no-explicit-any": 0,
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
       "no-console": "warn",
+      // TypeScript's own type checker already catches undefined names; ESLint's
+      // JS-only scope analysis doesn't know TS lib globals (e.g. EventListener)
+      // and false-positives on them, per typescript-eslint's own guidance.
+      "no-undef": "off",
     },
   },
 
