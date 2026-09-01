@@ -1,5 +1,8 @@
+import { readFileSync } from 'fs';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+
+const pkg = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf-8'));
 
 export default defineConfig({
   plugins: [react()],
@@ -8,6 +11,9 @@ export default defineConfig({
     open: true,
   },
   envPrefix: 'REACT_APP_',
+  define: {
+    __APP_VERSION__: JSON.stringify(pkg.version),
+  },
   build: {
     outDir: 'build', // CRA's default build output
   },
@@ -23,8 +29,6 @@ export default defineConfig({
       include: [
         "src/**/*.{ts,tsx}",
         "!src/index.tsx",
-        "!src/reportWebVitals.ts",
-        "!src/utils/supabase.ts",
         "!src/**/*.d.ts"
       ],
       thresholds: {

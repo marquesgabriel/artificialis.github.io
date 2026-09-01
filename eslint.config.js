@@ -49,6 +49,18 @@ export default [
       "@typescript-eslint/no-explicit-any": 0,
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
       "no-console": "warn",
+      // TypeScript's own type checker already catches undefined names; ESLint's
+      // JS-only scope analysis doesn't know TS lib globals (e.g. EventListener)
+      // and false-positives on them, per typescript-eslint's own guidance.
+      "no-undef": "off",
+    },
+  },
+
+  // vitest globals (describe/it/expect/etc.) for test files
+  {
+    files: ["src/**/*.test.{ts,tsx}"],
+    languageOptions: {
+      globals: { ...globals.vitest },
     },
   },
 
@@ -56,6 +68,6 @@ export default [
   prettier,
 
   {
-    ignores: ["build/", "coverage/", "node_modules/", "src/index.tsx", "**/*.d.ts", "**/*.test.tsx"],
+    ignores: ["build/", "coverage/", "node_modules/", "**/*.d.ts"],
   },
 ];

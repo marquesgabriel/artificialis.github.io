@@ -1,30 +1,27 @@
 import * as THREE from 'three';
 import * as yup from 'yup';
-import type { PrintObject, DripperSupportParams } from '../types';
+import type { PrintObject, DripperSupportParams } from '../../types';
 
 const WALL = 2.4;
 
 // ─── Geometry ────────────────────────────────────────────────────────────────
 
 function buildProfile(params: DripperSupportParams): [number, number][] {
-  const {
-    dripperInnerDiam,
-    dripperOuterDiam,
-    dripperDepth,
-    bottleMouthInnerDiam,
-    bottleMouthDepth,
-  } = params;
+  const { dripperInnerDiam, dripperOuterDiam, dripperDepth, bottleMouthInnerDiam, bottleMouthDepth } = params;
 
-  const bottleR = (bottleMouthInnerDiam-.1) / 2;
-  const dripperInnerR = (dripperInnerDiam+.1) / 2;
+  const bottleR = (bottleMouthInnerDiam - 0.1) / 2;
+  const dripperInnerR = (dripperInnerDiam + 0.1) / 2;
   const dripperOuterR = dripperOuterDiam / 2;
   const plugR = bottleR - WALL;
 
   const y0 = 0;
   const y1 = bottleMouthDepth;
-  const angleDeg = (plugR > dripperInnerR)? 45: 135;
-  const angleRad = angleDeg * Math.PI / 180;
-  const y2 = (plugR > dripperInnerR) ? y1 + Math.tan(angleRad) * (Math.max(1, plugR) - dripperInnerR): y1 - Math.tan(angleRad) * (Math.max(1, dripperInnerR) - plugR);
+  const angleDeg = plugR > dripperInnerR ? 45 : 135;
+  const angleRad = (angleDeg * Math.PI) / 180;
+  const y2 =
+    plugR > dripperInnerR
+      ? y1 + Math.tan(angleRad) * (Math.max(1, plugR) - dripperInnerR)
+      : y1 - Math.tan(angleRad) * (Math.max(1, dripperInnerR) - plugR);
   const y3 = y2 + dripperDepth + WALL;
 
   return [
@@ -32,20 +29,17 @@ function buildProfile(params: DripperSupportParams): [number, number][] {
     [Math.max(0.5, plugR), y0],
     [Math.max(1, bottleR), y0],
     [Math.max(1, bottleR), y1],
-    [dripperOuterR,       (y3 - (WALL/2))],
-    [dripperOuterR,       y3],
-    [dripperInnerR,       y3],
+    [dripperOuterR, y3 - WALL / 2],
+    [dripperOuterR, y3],
+    [dripperInnerR, y3],
     // this is the inner angle thinghimajig
-    [dripperInnerR,       y2],
-    [Math.max(0.5, plugR),       y1],
-    [Math.max(0.5, plugR),       y0]
+    [dripperInnerR, y2],
+    [Math.max(0.5, plugR), y1],
+    [Math.max(0.5, plugR), y0],
   ];
 }
 
-export function buildDripperGeometry(
-  params: DripperSupportParams,
-  segments = 64
-): THREE.BufferGeometry {
+export function buildDripperGeometry(params: DripperSupportParams, segments = 64): THREE.BufferGeometry {
   const profile = buildProfile(params);
   const vectors = profile.map(([r, y]) => new THREE.Vector2(r, y));
   const geo = new THREE.LatheGeometry(vectors, segments);
@@ -55,9 +49,7 @@ export function buildDripperGeometry(
 
 // ─── Validation ──────────────────────────────────────────────────────────────
 
-function buildDripperSchema(
-  t: (key: string, opts?: Record<string, unknown>) => string
-) {
+function buildDripperSchema(t: (key: string, opts?: Record<string, unknown>) => string) {
   return yup.object({
     dripperInnerDiam: yup
       .number()
