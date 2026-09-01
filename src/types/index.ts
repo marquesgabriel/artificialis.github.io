@@ -1,6 +1,7 @@
 // ─── Parameter types ────────────────────────────────────────────────────────
 
 export interface DripperSupportParams {
+  [key: string]: number;
   dripperInnerDiam: number;
   dripperOuterDiam: number;
   dripperDepth: number;
@@ -22,7 +23,9 @@ export interface PrintObject<TParams = Record<string, number>> {
   /** Default parameter values */
   defaults: TParams;
   /** Yup schema factory — receives i18n `t` function */
-  buildSchema: (t: (key: string, opts?: Record<string, unknown>) => string) => import('yup').ObjectSchema<Record<string, number>>;
+  buildSchema: (
+    t: (key: string, opts?: Record<string, unknown>) => string
+  ) => import('yup').ObjectSchema<Record<string, number>>;
   /** Build Three.js geometry from params */
   buildGeometry: (params: TParams, segments?: number) => import('three').BufferGeometry;
   /** Parameter field descriptors for rendering the form */
