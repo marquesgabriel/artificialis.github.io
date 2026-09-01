@@ -25,6 +25,7 @@ export const translations = {
       adsConsentPrompt: 'This site can show ads to help support development. Accept cookies to enable them.',
       adsAccept: 'Accept',
       adsDecline: 'Decline',
+      supportTitle: 'Support',
     },
   },
   pt: {
@@ -55,6 +56,7 @@ export const translations = {
         'Este site pode mostrar anúncios para ajudar a manter o desenvolvimento. Aceite os cookies para habilitá-los.',
       adsAccept: 'Aceitar',
       adsDecline: 'Recusar',
+      supportTitle: 'Apoio',
     },
   },
 };

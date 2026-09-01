@@ -12,7 +12,7 @@ vi.mock('./components', async (importOriginal) => {
 describe('App', () => {
   it('renders the app title and the default object selected', () => {
     render(<App />);
-    expect(screen.getByText('3D object creator')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: '3D object creator', level: 1 })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Dripper Support', level: 6 })).toBeInTheDocument();
   });
 

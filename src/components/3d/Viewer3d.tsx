@@ -8,10 +8,7 @@ interface Props<T extends Record<string, number>> {
   params: T;
 }
 
-export function Viewer3D<T extends Record<string, number>>({
-  object,
-  params,
-}: Props<T>) {
+export function Viewer3D<T extends Record<string, number>>({ object, params }: Props<T>) {
   const mountRef = useRef<HTMLDivElement>(null);
   const stateRef = useRef<{
     addMesh?: (p: T) => void;
@@ -28,7 +25,7 @@ export function Viewer3D<T extends Record<string, number>>({
     const H = el.clientHeight;
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color('#0f0e0d');
+    scene.background = new THREE.Color('#6ac1f3');
 
     const camera = new THREE.PerspectiveCamera(42, W / H, 0.1, 2000);
     camera.position.set(0, 60, 200);
@@ -45,22 +42,22 @@ export function Viewer3D<T extends Record<string, number>>({
     key.position.set(-100, 50, -80);
     // key.position.set(100, 200, 100);
     scene.add(key);
-    const fill = new THREE.DirectionalLight(0x0ceea3, 0.6);
+    const fill = new THREE.DirectionalLight(0xe0ddd9, 1);
     // fill.position.set(-100, 50, -80);
     fill.position.set(100, 200, 100);
     scene.add(fill);
-    const rim = new THREE.DirectionalLight(0xffe4b5, 0.4);
+    const rim = new THREE.DirectionalLight(0xe0ddd9, 1);
     rim.position.set(0, -80, -100);
     scene.add(rim);
 
     // Grid
-    const grid = new THREE.GridHelper(300, 90, '#b85d03', '#b85d03');
+    const grid = new THREE.GridHelper(300, 90, '#050505', '#050505');
     grid.position.y = -1;
     scene.add(grid);
 
     // Material
     const mat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color('#13c76d'),
+      color: new THREE.Color('#bdc3ce'),
       metalness: 0.15,
       roughness: 0.45,
     });
@@ -69,7 +66,10 @@ export function Viewer3D<T extends Record<string, number>>({
     let geo: BufferGeometry | null = null;
 
     const addMesh = (p: T) => {
-      if (mesh) { scene.remove(mesh); geo?.dispose(); }
+      if (mesh) {
+        scene.remove(mesh);
+        geo?.dispose();
+      }
       geo = object.buildGeometry(p, 80);
       mesh = new THREE.Mesh(geo, mat);
       mesh.rotation.x = -Math.PI / 2;
@@ -84,29 +84,36 @@ export function Viewer3D<T extends Record<string, number>>({
 
     // Orbit — manual implementation
     let isDragging = false;
-    let lastX = 0, lastY = 0;
-    let rotY = 0.4, rotX = 0.25, zoom = 1;
+    let lastX = 0,
+      lastY = 0;
+    let rotY = 0.4,
+      rotX = 0.25,
+      zoom = 1;
 
     const onDown = (e: MouseEvent | TouchEvent) => {
       isDragging = true;
       lastX = 'touches' in e ? e.touches[0].clientX : e.clientX;
       lastY = 'touches' in e ? e.touches[0].clientY : e.clientY;
     };
-    const onUp = () => { isDragging = false; };
+    const onUp = () => {
+      isDragging = false;
+    };
     const onMove = (e: MouseEvent | TouchEvent) => {
       if (!isDragging) return;
       const cx = 'touches' in e ? e.touches[0].clientX : e.clientX;
       const cy = 'touches' in e ? e.touches[0].clientY : e.clientY;
       rotY += (cx - lastX) * 0.008;
       rotX += (cy - lastY) * 0.005;
-      lastX = cx; lastY = cy;
+      lastX = cx;
+      lastY = cy;
     };
     const onWheel = (e: WheelEvent) => {
       zoom = Math.max(0.3, Math.min(3, zoom + e.deltaY * 0.001));
       e.preventDefault();
     };
     const onResize = () => {
-      const w = el.clientWidth, h = el.clientHeight;
+      const w = el.clientWidth,
+        h = el.clientHeight;
       renderer.setSize(w, h);
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
@@ -119,7 +126,15 @@ export function Viewer3D<T extends Record<string, number>>({
     window.addEventListener('mousemove', onMove as EventListener);
     window.addEventListener('touchmove', onMove as EventListener);
     el.addEventListener('wheel', onWheel, { passive: false });
-    window.addEventListener('resize', onResize);
+
+    // A ResizeObserver (rather than only a window 'resize' listener) also
+    // self-corrects if `el` had zero size at mount time - e.g. its layout
+    // depends on a separately-loaded stylesheet (src/styles/index.scss)
+    // that hasn't necessarily applied yet when this effect first runs,
+    // which otherwise leaves the renderer permanently sized 0x0 and the
+    // canvas invisible until an unrelated window resize happens to fire.
+    const resizeObserver = new ResizeObserver(onResize);
+    resizeObserver.observe(el);
 
     let raf: number;
     const animate = () => {
@@ -144,7 +159,7 @@ export function Viewer3D<T extends Record<string, number>>({
       window.removeEventListener('mousemove', onMove as EventListener);
       window.removeEventListener('touchmove', onMove as EventListener);
       el.removeEventListener('wheel', onWheel);
-      window.removeEventListener('resize', onResize);
+      resizeObserver.disconnect();
       renderer.dispose();
       geo?.dispose();
       if (el.contains(renderer.domElement)) el.removeChild(renderer.domElement);
@@ -160,9 +175,13 @@ export function Viewer3D<T extends Record<string, number>>({
   }, [params]);
 
   return (
-    <div
-      ref={mountRef}
-      style={{ width: '100%', height: '100%', cursor: 'grab', borderRadius: 12, overflow: 'hidden' }}
-    />
+    // Absolute+inset fills the parent's actual painted box directly, rather
+    // than via a height:100% percentage that depends on the parent having a
+    // CSS-definite height - the parent here only gets its size from flex:1
+    // inside a flex column, which flexbox resolves visually but doesn't
+    // count as "definite" for percentage-height resolution on children,
+    // leaving this at 0 height (and the whole canvas invisible) regardless
+    // of when Viewer3D measures it.
+    <div ref={mountRef} style={{ position: 'absolute', inset: 0, cursor: 'grab', overflow: 'hidden' }} />
   );
 }

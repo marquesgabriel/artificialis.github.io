@@ -4,9 +4,7 @@ import {
   Button,
   CssBaseline,
   FormControl,
-  InputLabel,
   MenuItem,
-  Paper,
   Select,
   SelectChangeEvent,
   Stack,
@@ -17,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 
 import { OBJECTS } from './objects';
 import { useParamForm } from './hooks/useParamForm';
-import { Viewer3D, downloadSTL, ParameterPanel, Footer, AboutPage, SupportSidebar } from './components';
+import { Viewer3D, downloadSTL, ParameterPanel, Footer, AboutPage, SupportSidebar, Window } from './components';
 import theme from './theme';
 import type { PrintObject } from './types';
 
@@ -68,77 +66,70 @@ export function App() {
             gridTemplateColumns: { xs: '1fr', lg: '720px 1fr' },
           }}
         >
-          <Paper sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
-              <Box>
-                <Typography variant="subtitle2" color="text.secondary">
-                  {t('objectSelector')}
-                </Typography>
-                <Typography variant="h6">{t(object.labelKey)}</Typography>
-              </Box>
-              <FormControl size="small" sx={{ minWidth: 140 }}>
-                <InputLabel id="object-select-label">{t('objectSelector')}</InputLabel>
-                <Select
-                  labelId="object-select-label"
-                  value={selectedObjectId}
-                  label={t('objectSelector')}
-                  onChange={handleObjectChange}
-                >
-                  {OBJECTS.map((item) => (
-                    <MenuItem key={item.id} value={item.id}>
-                      {t(item.labelKey)}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Stack>
-
-            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
-              <Stack direction="row" spacing={1} sx={{ ml: 'auto' }}>
-                <Button variant="outlined" onClick={reset}>
-                  {t('resetDefaults')}
-                </Button>
-                <Button variant="contained" disabled={!isValid} onClick={handleDownload}>
-                  {t('downloadSTL')}
-                </Button>
+          <Window title={t('parameters')}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+                <Box>
+                  <Typography variant="subtitle2">{t('objectSelector')}</Typography>
+                  <Typography variant="h6">{t(object.labelKey)}</Typography>
+                </Box>
+                <FormControl size="small" sx={{ minWidth: 140 }}>
+                  <Select
+                    value={selectedObjectId}
+                    onChange={handleObjectChange}
+                    inputProps={{ 'aria-label': t('objectSelector') }}
+                  >
+                    {OBJECTS.map((item) => (
+                      <MenuItem key={item.id} value={item.id}>
+                        {t(item.labelKey)}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Stack>
-            </Stack>
 
-            <ParameterPanel
-              object={object}
-              raw={raw}
-              values={values}
-              errors={errors}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-          </Paper>
+              <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+                <Stack direction="row" spacing={1} sx={{ ml: 'auto' }}>
+                  <Button variant="outlined" onClick={reset}>
+                    {t('resetDefaults')}
+                  </Button>
+                  <Button variant="contained" disabled={!isValid} onClick={handleDownload}>
+                    {t('downloadSTL')}
+                  </Button>
+                </Stack>
+              </Stack>
 
-          <Paper sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2, minHeight: 560 }}>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={1}>
-              <Box>
-                <Typography variant="subtitle2" color="text.secondary">
-                  {t('preview')}
-                </Typography>
-                <Typography variant="h6">{t('sectionDiagram')}</Typography>
-              </Box>
-              <Typography variant="caption" color="text.secondary">
-                {t('dragToRotate')}
-              </Typography>
-            </Stack>
-
-            <Box
-              sx={{
-                flex: 1,
-                minHeight: 460,
-                borderRadius: 2,
-                overflow: 'hidden',
-                backgroundColor: 'background.default',
-              }}
-            >
-              <Viewer3D object={object} params={values} />
+              <ParameterPanel
+                object={object}
+                raw={raw}
+                values={values}
+                errors={errors}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
             </Box>
-          </Paper>
+          </Window>
+
+          <Window title={t('preview')}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, minHeight: 560 }}>
+              <Stack direction="row" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={1}>
+                <Typography variant="h6">{t('sectionDiagram')}</Typography>
+                <Typography variant="caption">{t('dragToRotate')}</Typography>
+              </Stack>
+
+              <Box
+                sx={{
+                  position: 'relative',
+                  flex: 1,
+                  minHeight: 460,
+                  overflow: 'hidden',
+                  backgroundColor: 'background.default',
+                }}
+              >
+                <Viewer3D object={object} params={values} />
+              </Box>
+            </Box>
+          </Window>
         </Box>
 
         <SupportSidebar />
