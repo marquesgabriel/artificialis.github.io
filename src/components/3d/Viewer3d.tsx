@@ -8,10 +8,7 @@ interface Props<T extends Record<string, number>> {
   params: T;
 }
 
-export function Viewer3D<T extends Record<string, number>>({
-  object,
-  params,
-}: Props<T>) {
+export function Viewer3D<T extends Record<string, number>>({ object, params }: Props<T>) {
   const mountRef = useRef<HTMLDivElement>(null);
   const stateRef = useRef<{
     addMesh?: (p: T) => void;
@@ -69,7 +66,10 @@ export function Viewer3D<T extends Record<string, number>>({
     let geo: BufferGeometry | null = null;
 
     const addMesh = (p: T) => {
-      if (mesh) { scene.remove(mesh); geo?.dispose(); }
+      if (mesh) {
+        scene.remove(mesh);
+        geo?.dispose();
+      }
       geo = object.buildGeometry(p, 80);
       mesh = new THREE.Mesh(geo, mat);
       mesh.rotation.x = -Math.PI / 2;
@@ -84,29 +84,36 @@ export function Viewer3D<T extends Record<string, number>>({
 
     // Orbit — manual implementation
     let isDragging = false;
-    let lastX = 0, lastY = 0;
-    let rotY = 0.4, rotX = 0.25, zoom = 1;
+    let lastX = 0,
+      lastY = 0;
+    let rotY = 0.4,
+      rotX = 0.25,
+      zoom = 1;
 
     const onDown = (e: MouseEvent | TouchEvent) => {
       isDragging = true;
       lastX = 'touches' in e ? e.touches[0].clientX : e.clientX;
       lastY = 'touches' in e ? e.touches[0].clientY : e.clientY;
     };
-    const onUp = () => { isDragging = false; };
+    const onUp = () => {
+      isDragging = false;
+    };
     const onMove = (e: MouseEvent | TouchEvent) => {
       if (!isDragging) return;
       const cx = 'touches' in e ? e.touches[0].clientX : e.clientX;
       const cy = 'touches' in e ? e.touches[0].clientY : e.clientY;
       rotY += (cx - lastX) * 0.008;
       rotX += (cy - lastY) * 0.005;
-      lastX = cx; lastY = cy;
+      lastX = cx;
+      lastY = cy;
     };
     const onWheel = (e: WheelEvent) => {
       zoom = Math.max(0.3, Math.min(3, zoom + e.deltaY * 0.001));
       e.preventDefault();
     };
     const onResize = () => {
-      const w = el.clientWidth, h = el.clientHeight;
+      const w = el.clientWidth,
+        h = el.clientHeight;
       renderer.setSize(w, h);
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
@@ -119,7 +126,15 @@ export function Viewer3D<T extends Record<string, number>>({
     window.addEventListener('mousemove', onMove as EventListener);
     window.addEventListener('touchmove', onMove as EventListener);
     el.addEventListener('wheel', onWheel, { passive: false });
-    window.addEventListener('resize', onResize);
+
+    // A ResizeObserver (rather than only a window 'resize' listener) also
+    // self-corrects if `el` had zero size at mount time - e.g. its layout
+    // depends on a separately-loaded stylesheet (src/styles/index.scss)
+    // that hasn't necessarily applied yet when this effect first runs,
+    // which otherwise leaves the renderer permanently sized 0x0 and the
+    // canvas invisible until an unrelated window resize happens to fire.
+    const resizeObserver = new ResizeObserver(onResize);
+    resizeObserver.observe(el);
 
     let raf: number;
     const animate = () => {
@@ -144,7 +159,7 @@ export function Viewer3D<T extends Record<string, number>>({
       window.removeEventListener('mousemove', onMove as EventListener);
       window.removeEventListener('touchmove', onMove as EventListener);
       el.removeEventListener('wheel', onWheel);
-      window.removeEventListener('resize', onResize);
+      resizeObserver.disconnect();
       renderer.dispose();
       geo?.dispose();
       if (el.contains(renderer.domElement)) el.removeChild(renderer.domElement);

@@ -1,4 +1,4 @@
-import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
+import { Box, FormControl, MenuItem, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
 
 import { useTranslation } from 'react-i18next';
 import { Window } from '../chrome';
@@ -25,14 +25,13 @@ export const AboutPage = () => {
             </Typography>
           </Box>
 
-          <Stack spacing={1.5} alignItems={{ xs: 'flex-start', md: 'flex-end' }}>
+          <Stack spacing={0.5} alignItems={{ xs: 'flex-start', md: 'flex-end' }}>
+            <Typography variant="body2">{t('langLabel')}</Typography>
             <FormControl size="small" sx={{ minWidth: 160 }}>
-              <InputLabel id="language-select-label-top">{t('langLabel')}</InputLabel>
               <Select
-                labelId="language-select-label-top"
                 value={i18n.language}
-                label={t('langLabel')}
                 onChange={handleLanguageChange}
+                inputProps={{ 'aria-label': t('langLabel') }}
               >
                 <MenuItem value="en">EN</MenuItem>
                 <MenuItem value="pt">PT</MenuItem>

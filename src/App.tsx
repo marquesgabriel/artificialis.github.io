@@ -4,7 +4,6 @@ import {
   Button,
   CssBaseline,
   FormControl,
-  InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -75,12 +74,10 @@ export function App() {
                   <Typography variant="h6">{t(object.labelKey)}</Typography>
                 </Box>
                 <FormControl size="small" sx={{ minWidth: 140 }}>
-                  <InputLabel id="object-select-label">{t('objectSelector')}</InputLabel>
                   <Select
-                    labelId="object-select-label"
                     value={selectedObjectId}
-                    label={t('objectSelector')}
                     onChange={handleObjectChange}
+                    inputProps={{ 'aria-label': t('objectSelector') }}
                   >
                     {OBJECTS.map((item) => (
                       <MenuItem key={item.id} value={item.id}>
